@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NordVPS — Kraftfulde servere til din pris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue-50: #E6F1FB; --blue-100: #B5D4F4; --blue-200: #85B7EB;
+  --blue-400: #378ADD; --blue-600: #185FA5; --blue-800: #0C447C; --blue-900: #042C53;
+  --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-400: #1D9E75; --teal-600: #0F6E56;
+  --gray-50: #F7F7F6; --gray-100: #EBEBEA; --gray-200: #D3D1C7;
+  --gray-400: #888780; --gray-600: #5F5E5A; --gray-900: #1A1A18;
+  --red-50: #FCEBEB; --red-400: #E24B4A; --red-600: #A32D2D;
+  --green-50: #EAF3DE; --green-400: #639922; --green-600: #3B6D11;
+  --amber-50: #FAEEDA; --amber-400: #BA7517;
+  --font-mono: 'Space Mono', monospace;
+  --font-sans: 'DM Sans', sans-serif;
+  --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--gray-50);
+  color: var(--gray-900);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ── PAGE ROUTING ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: white;
+  border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 60px;
+  box-shadow: var(--shadow-sm);
+}
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: 18px; font-weight: 700;
+  color: var(--blue-900);
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; text-decoration: none;
+}
+
+.logo-dot {
+  width: 8px; height: 8px;
+  background: var(--teal-400);
+  border-radius: 50%;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.nav-links { display: flex; gap: 0.25rem; align-items: center; list-style: none; }
+
+.nav-links a {
+  font-size: 14px; color: var(--gray-600);
+  text-decoration: none; padding: 6px 12px;
+  border-radius: var(--radius-md);
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-links a:hover { background: var(--gray-50); color: var(--gray-900); }
+
+.btn { display: inline-flex; align-items: center; gap: 6px; border: none; cursor: pointer; font-family: var(--font-sans); border-radius: var(--radius-md); font-weight: 500; transition: all 0.15s; text-decoration: none; }
+
+.btn-primary { background: var(--blue-900); color: white; padding: 10px 20px; font-size: 14px; }
+.btn-primary:hover { background: var(--blue-800); transform: translateY(-1px); }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary { background: white; color: var(--gray-900); border: 1px solid var(--gray-200); padding: 10px 20px; font-size: 14px; }
+.btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-400); }
+
+.btn-outline { background: transparent; color: var(--gray-900); border: 1px solid var(--gray-200); padding: 10px 20px; font-size: 14px; }
+.btn-outline:hover { background: var(--gray-100); }
+
+.btn-lg { padding: 14px 28px; font-size: 16px; }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+
+/* ══════════════════════════════
+   LANDING PAGE
+══════════════════════════════ */
+
+/* Hero */
+.hero {
+  background: white;
+  border-bottom: 1px solid var(--gray-100);
+  padding: 6rem 2rem 5rem;
+  text-align: center;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--teal-600); background: var(--teal-50);
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(36px, 5.5vw, 60px);
+  font-weight: 600; letter-spacing: -2px; line-height: 1.05;
+  max-width: 720px; margin: 0 auto 1.25rem;
+}
+
+.hero h1 em { font-style: normal; color: var(--blue-600); }
+
+.hero-sub {
+  font-size: 18px; color: var(--gray-600); font-weight: 300;
+  max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.6;
+}
+
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+.hero-trust {
+  display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+  margin-top: 3rem; padding-top: 2.5rem;
+  border-top: 1px solid var(--gray-100);
+}
+
+.trust-item { text-align: center; }
+.trust-num { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--gray-900); }
+.trust-label { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+/* Pricing */
+.section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+.section-sm { padding: 3.5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+.section-header { margin-bottom: 2.5rem; }
+.section-kicker { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-600); margin-bottom: 6px; }
+.section-title { font-size: 30px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6px; }
+.section-sub { font-size: 15px; color: var(--gray-600); }
+
+.billing-row { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; flex-wrap: wrap; }
+.billing-label { font-size: 14px; color: var(--gray-600); }
+.billing-label.active { color: var(--gray-900); font-weight: 500; }
+
+.toggle-track {
+  width: 48px; height: 26px; background: var(--blue-600);
+  border-radius: 13px; cursor: pointer; position: relative;
+  border: none; transition: background 0.2s;
+}
+
+.toggle-track::after {
+  content: ''; position: absolute;
+  width: 20px; height: 20px; background: white;
+  border-radius: 50%; top: 3px; left: 3px;
+  transition: transform 0.2s;
+}
+
+.toggle-track.on::after { transform: translateX(22px); }
+
+.save-pill {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  color: var(--teal-600); background: var(--teal-50);
+  padding: 3px 10px; border-radius: 10px;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.plan-card {
+  background: white; border-radius: var(--radius-xl);
+  border: 1px solid var(--gray-100);
+  padding: 1.75rem 1.5rem;
+  position: relative;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.plan-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.plan-card.featured { border: 2px solid var(--blue-600); }
+
+.featured-pill {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--blue-600); color: white;
+  font-size: 11px; font-weight: 500;
+  padding: 3px 14px; border-radius: 10px;
+  font-family: var(--font-mono); white-space: nowrap; letter-spacing: 0.5px;
+}
+
+.plan-tier {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray-400); margin-bottom: 1rem;
+}
+
+.plan-price-row { display: flex; align-items: baseline; gap: 3px; margin-bottom: 1.25rem; }
+.plan-currency { font-size: 16px; color: var(--gray-400); font-weight: 500; margin-top: 4px; }
+.plan-amount { font-family: var(--font-mono); font-size: 40px; font-weight: 700; letter-spacing: -2px; line-height: 1; }
+.plan-period { font-size: 13px; color: var(--gray-400); }
+
+.plan-specs { border-top: 1px solid var(--gray-100); border-bottom: 1px solid var(--gray-100); padding: 1rem 0; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 8px; }
+.spec { display: flex; justify-content: space-between; font-size: 13px; }
+.spec-k { color: var(--gray-400); }
+.spec-v { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--gray-900); }
+
+.plan-feats { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.25rem; }
+.feat { font-size: 13px; color: var(--gray-600); display: flex; align-items: center; gap: 7px; }
+.feat::before { content: '✓'; color: var(--teal-400); font-weight: 700; font-size: 12px; flex-shrink: 0; }
+
+.btn-plan { width: 100%; padding: 10px; border-radius: var(--radius-md); font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font-sans); border: 1px solid var(--gray-200); background: white; color: var(--gray-900); transition: all 0.15s; }
+.btn-plan:hover { background: var(--gray-50); border-color: var(--gray-400); }
+.btn-plan.featured { background: var(--blue-900); color: white; border: none; }
+.btn-plan.featured:hover { background: var(--blue-800); }
+
+/* Features section */
+.features-bg { background: white; border-top: 1px solid var(--gray-100); border-bottom: 1px solid var(--gray-100); }
+
+.feats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+
+.feat-card {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  background: var(--gray-50);
+}
+
+.feat-icon {
+  width: 40px; height: 40px; border-radius: var(--radius-md);
+  background: var(--blue-50); display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 1rem;
+}
+
+.feat-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.feat-desc { font-size: 13px; color: var(--gray-600); line-height: 1.55; }
+
+/* Locations */
+.locs { display: flex; flex-wrap: wrap; gap: 10px; }
+.loc {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-radius: var(--radius-md);
+  border: 1px solid var(--gray-100); background: white;
+  font-size: 13px; font-weight: 500;
+}
+.loc-flag { font-size: 20px; }
+.loc-ping { font-family: var(--font-mono); font-size: 11px; color: var(--teal-600); }
+
+/* CTA */
+.cta-block {
+  background: var(--blue-900); padding: 5rem 2rem; text-align: center;
+}
+.cta-block h2 { font-size: 32px; font-weight: 600; color: white; letter-spacing: -0.5px; margin-bottom: 0.75rem; }
+.cta-block p { color: var(--blue-200); font-size: 16px; margin-bottom: 2rem; }
+.cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-cta { background: white; color: var(--blue-900); padding: 14px 28px; font-size: 15px; font-weight: 600; border-radius: var(--radius-md); border: none; cursor: pointer; font-family: var(--font-sans); transition: opacity 0.15s; }
+.btn-cta:hover { opacity: 0.9; }
+.btn-cta-ghost { background: transparent; color: var(--blue-200); padding: 14px 28px; font-size: 15px; font-weight: 500; border-radius: var(--radius-md); border: 1px solid var(--blue-800); cursor: pointer; font-family: var(--font-sans); transition: border-color 0.15s; }
+.btn-cta-ghost:hover { border-color: var(--blue-200); }
+
+/* Footer */
+footer {
+  background: white; border-top: 1px solid var(--gray-100);
+  padding: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--gray-400); }
+.footer-links { display: flex; gap: 1.5rem; list-style: none; }
+.footer-links a { font-size: 13px; color: var(--gray-400); text-decoration: none; }
+.footer-links a:hover { color: var(--gray-900); }
+
+/* ══════════════════════════════
+   CHECKOUT PAGE
+══════════════════════════════ */
+
+.checkout-layout {
+  max-width: 1000px; margin: 0 auto; padding: 3rem 2rem;
+  display: grid; grid-template-columns: 1fr 380px; gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 760px) { .checkout-layout { grid-template-columns: 1fr; } }
+
+.checkout-main { display: flex; flex-direction: column; gap: 1.5rem; }
+.checkout-sidebar { position: sticky; top: 80px; }
+
+.checkout-card {
+  background: white; border-radius: var(--radius-xl);
+  border: 1px solid var(--gray-100); overflow: hidden;
+}
+
+.checkout-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; gap: 10px;
+}
+
+.step-badge {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--blue-900); color: white;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); flex-shrink: 0;
+}
+
+.step-badge.done { background: var(--teal-400); }
+
+.checkout-card-title { font-size: 15px; font-weight: 600; }
+
+.checkout-card-body { padding: 1.5rem; }
+
+/* Form */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.form-group:last-child { margin-bottom: 0; }
+label { font-size: 13px; font-weight: 500; color: var(--gray-600); }
+
+input[type=text], input[type=email], input[type=tel], select {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+  font-family: var(--font-sans); font-size: 14px; color: var(--gray-900);
+  background: white; transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--blue-400);
+  box-shadow: 0 0 0 3px rgba(55, 138, 221, 0.12);
+}
+
+input.error { border-color: var(--red-400); }
+.field-error { font-size: 12px; color: var(--red-600); margin-top: 2px; display: none; }
+.field-error.show { display: block; }
+
+/* Payment methods */
+.payment-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.pay-tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200); background: white;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all 0.15s; font-family: var(--font-sans);
+}
+.pay-tab.active { border-color: var(--blue-600); background: var(--blue-50); color: var(--blue-800); }
+.pay-tab:hover:not(.active) { border-color: var(--gray-400); }
+.pay-tab-icon { font-size: 18px; }
+
+.pay-panel { display: none; }
+.pay-panel.active { display: block; }
+
+/* Card input */
+.card-field {
+  position: relative;
+}
+
+.card-field input { padding-right: 48px; font-family: var(--font-mono); }
+.card-icons { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: flex; gap: 4px; }
+.card-icon { width: 28px; height: 18px; border-radius: 3px; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--gray-600); }
+
+/* MobilePay */
+.mobilepay-box {
+  background: var(--blue-50); border-radius: var(--radius-lg);
+  padding: 2rem; text-align: center;
+}
+.mobilepay-logo { font-size: 32px; font-weight: 700; color: #5A78FF; font-family: var(--font-mono); margin-bottom: 0.5rem; }
+.mobilepay-sub { font-size: 14px; color: var(--gray-600); }
+.mobilepay-num { font-size: 24px; font-family: var(--font-mono); font-weight: 700; color: var(--gray-900); margin: 1rem 0 0.5rem; }
+
+/* Invoice */
+.invoice-info { background: var(--amber-50); border-radius: var(--radius-md); padding: 1rem; font-size: 13px; color: var(--gray-600); line-height: 1.6; margin-top: 1rem; }
+
+/* OS selector */
+.os-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+.os-option {
+  border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+  padding: 10px 8px; text-align: center; cursor: pointer;
+  transition: all 0.15s; font-size: 13px; font-weight: 500;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.os-option:hover { border-color: var(--gray-400); background: var(--gray-50); }
+.os-option.selected { border-color: var(--blue-600); background: var(--blue-50); color: var(--blue-800); }
+.os-emoji { font-size: 22px; }
+
+/* Location selector */
+.loc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.loc-option {
+  border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+  padding: 8px 12px; cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; gap: 8px; font-size: 13px;
+}
+.loc-option:hover { border-color: var(--gray-400); background: var(--gray-50); }
+.loc-option.selected { border-color: var(--blue-600); background: var(--blue-50); color: var(--blue-800); }
+.loc-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal-400); margin-left: auto; flex-shrink: 0; }
+
+/* Order summary */
+.order-summary {
+  background: white; border-radius: var(--radius-xl);
+  border: 1px solid var(--gray-100); padding: 1.5rem;
+}
+
+.summary-plan-name { font-family: var(--font-mono); font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.summary-plan-spec { font-size: 12px; color: var(--gray-400); margin-bottom: 1.25rem; }
+
+.summary-line { display: flex; justify-content: space-between; font-size: 14px; padding: 6px 0; color: var(--gray-600); }
+.summary-line.bold { font-weight: 600; color: var(--gray-900); border-top: 1px solid var(--gray-100); margin-top: 6px; padding-top: 12px; font-size: 16px; }
+.summary-line.mono { font-family: var(--font-mono); }
+
+.promo-row { display: flex; gap: 8px; margin: 1rem 0; }
+.promo-row input { flex: 1; }
+.promo-success { font-size: 12px; color: var(--teal-600); margin-top: 4px; display: none; }
+.promo-success.show { display: block; }
+
+.btn-checkout-submit {
+  width: 100%; padding: 14px;
+  background: var(--blue-900); color: white;
+  border: none; border-radius: var(--radius-md);
+  font-size: 16px; font-weight: 600;
+  cursor: pointer; font-family: var(--font-sans);
+  transition: background 0.15s;
+  margin-top: 1rem;
+}
+
+.btn-checkout-submit:hover { background: var(--blue-800); }
+
+.secure-note {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 12px; color: var(--gray-400); margin-top: 10px;
+}
+
+/* ── SUCCESS PAGE ── */
+.success-wrap {
+  min-height: 70vh; display: flex; align-items: center; justify-content: center;
+  padding: 4rem 2rem;
+}
+
+.success-card {
+  background: white; border-radius: var(--radius-xl);
+  border: 1px solid var(--gray-100); padding: 3rem;
+  text-align: center; max-width: 500px; width: 100%;
+  box-shadow: var(--shadow-md);
+}
+
+.success-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--teal-50); display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin: 0 auto 1.5rem;
+}
+
+.success-title { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 0.5rem; }
+.success-sub { font-size: 15px; color: var(--gray-600); margin-bottom: 2rem; line-height: 1.6; }
+
+.server-details {
+  background: var(--gray-50); border-radius: var(--radius-lg);
+  padding: 1.25rem; margin-bottom: 2rem; text-align: left;
+}
+
+.server-detail-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px; padding: 5px 0;
+}
+
+.server-detail-row:not(:last-child) { border-bottom: 1px solid var(--gray-100); padding-bottom: 8px; margin-bottom: 3px; }
+
+.server-detail-label { color: var(--gray-400); }
+.server-detail-value { font-family: var(--font-mono); font-weight: 700; font-size: 12px; }
+
+.server-detail-value.green { color: var(--teal-600); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .nav-links { display: none; }
+  .hero { padding: 4rem 1.25rem 3rem; }
+  .hero h1 { font-size: 32px; }
+  .section, .section-sm { padding: 3rem 1.25rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .os-grid { grid-template-columns: repeat(3, 1fr); }
+  .loc-grid { grid-template-columns: 1fr; }
+}
+
+/* ── UTILITIES ── */
+.badge {
+  display: inline-block; font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+  padding: 2px 8px; border-radius: 10px;
+}
+.badge-green { background: var(--green-50); color: var(--green-600); }
+.badge-blue { background: var(--blue-50); color: var(--blue-800); }
+
+.spinner {
+  display: inline-block; width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white; border-radius: 50%;
+  animation: spin 0.7s linear infinite; vertical-align: middle;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.fade-in { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+</style>
+</head>
+<body>
+
+<!-- ════════ NAV ════════ -->
+<nav id="main-nav">
+  <a class="logo" onclick="showPage('landing')">
+    <span class="logo-dot"></span>NordVPS
+  </a>
+  <ul class="nav-links">
+    <li><a href="#pricing" onclick="showPage('landing')">Priser</a></li>
+    <li><a href="#features" onclick="showPage('landing')">Features</a></li>
+    <li><a href="#locations" onclick="showPage('landing')">Lokationer</a></li>
+    <li><a href="#">Support</a></li>
+  </ul>
+  <button class="btn btn-primary btn-sm" onclick="showPage('landing'); setTimeout(()=>document.getElementById('pricing').scrollIntoView({behavior:'smooth'}),50)">Kom i gang</button>
+</nav>
+
+
+<!-- ════════════════════════════════════
+     PAGE: LANDING
+════════════════════════════════════ -->
+<div id="page-landing" class="page active">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span style="width:6px;height:6px;background:var(--teal-400);border-radius:50%;display:inline-block"></span>
+      99.99% uptime SLA
+    </div>
+    <h1>Kraftfulde <em>VPS-servere</em><br>til din pris</h1>
+    <p class="hero-sub">NVMe SSD, dedikeret RAM og fuld root-adgang. Din server er klar på under 60 sekunder.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Se planer →</button>
+      <button class="btn btn-secondary btn-lg">Beregn pris</button>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><div class="trust-num">12.000+</div><div class="trust-label">Aktive servere</div></div>
+      <div class="trust-item"><div class="trust-num">8</div><div class="trust-label">Datacenter-regioner</div></div>
+      <div class="trust-item"><div class="trust-num">&lt;60s</div><div class="trust-label">Leveringstid</div></div>
+      <div class="trust-item"><div class="trust-num">24/7</div><div class="trust-label">Support</div></div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section" id="pricing">
+    <div class="section-header">
+      <div class="section-kicker">Priser</div>
+      <div class="section-title">Vælg din plan</div>
+      <div class="section-sub">Alle planer inkluderer DDoS-beskyttelse, IPv4 og IPv6</div>
+    </div>
+
+    <div class="billing-row">
+      <span class="billing-label active" id="lbl-monthly">Månedlig</span>
+      <button class="toggle-track" id="billing-toggle" onclick="toggleBilling()" aria-label="Skift fakturering"></button>
+      <span class="billing-label" id="lbl-annual">Årlig</span>
+      <span class="save-pill">spar 20%</span>
+    </div>
+
+    <div class="plans-grid" id="plans-grid">
+      <!-- injected by JS -->
+    </div>
+  </section>
+
+  <!-- Features -->
+  <div class="features-bg" id="features">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-kicker">Features</div>
+        <div class="section-title">Alt hvad du har brug for</div>
+        <div class="section-sub">Ingen skjulte gebyrer. Ingen binding. Opsig når som helst.</div>
+      </div>
+      <div class="feats-grid">
+        <div class="feat-card"><div class="feat-icon">⚡</div><div class="feat-title">NVMe SSD</div><div class="feat-desc">Op til 10× hurtigere end traditionel SSD med markant lavere latenstid og højere IOPS.</div></div>
+        <div class="feat-card"><div class="feat-icon">🛡️</div><div class="feat-title">DDoS-beskyttelse</div><div class="feat-desc">Inkluderet på alle planer. Op til 1 Tbps filtrering uden ekstra omkostning.</div></div>
+        <div class="feat-card"><div class="feat-icon">💾</div><div class="feat-title">Automatisk backup</div><div class="feat-desc">Daglig snapshot-backup med nem gendannelse direkte fra kontrolpanelet.</div></div>
+        <div class="feat-card"><div class="feat-icon">🖥️</div><div class="feat-title">Full root-adgang</div><div class="feat-desc">SSH, KVM-konsol og fuld kontrol. Dit OS, dine konfigurationer, dine regler.</div></div>
+        <div class="feat-card"><div class="feat-icon">📈</div><div class="feat-title">Øjeblikkelig skalering</div><div class="feat-desc">Opgrader eller nedgrader din plan med ét klik — typisk uden nedetid.</div></div>
+        <div class="feat-card"><div class="feat-icon">🎧</div><div class="feat-title">24/7 support</div><div class="feat-desc">Tekniske eksperter klar hele døgnet via chat, e-mail og telefon.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Locations -->
+  <section class="section" id="locations">
+    <div class="section-header">
+      <div class="section-kicker">Lokationer</div>
+      <div class="section-title">Vælg dit datacenter</div>
+      <div class="section-sub">Alle lokationer forbundet med 10 Gbps backbone-netværk</div>
+    </div>
+    <div class="locs">
+      <div class="loc"><span class="loc-flag">🇩🇰</span> Danmark — København <span class="loc-ping">~5ms</span></div>
+      <div class="loc"><span class="loc-flag">🇩🇪</span> Tyskland — Frankfurt <span class="loc-ping">~18ms</span></div>
+      <div class="loc"><span class="loc-flag">🇳🇱</span> Holland — Amsterdam <span class="loc-ping">~22ms</span></div>
+      <div class="loc"><span class="loc-flag">🇬🇧</span> UK — London <span class="loc-ping">~28ms</span></div>
+      <div class="loc"><span class="loc-flag">🇺🇸</span> USA — New York <span class="loc-ping">~90ms</span></div>
+      <div class="loc"><span class="loc-flag">🇺🇸</span> USA — Los Angeles <span class="loc-ping">~145ms</span></div>
+      <div class="loc"><span class="loc-flag">🇸🇬</span> Singapore <span class="loc-ping">~165ms</span></div>
+      <div class="loc"><span class="loc-flag">🇯🇵</span> Japan — Tokyo <span class="loc-ping">~200ms</span></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>Klar til at komme i gang?</h2>
+    <p>Deploy din første server på under 60 sekunder. Ingen binding.</p>
+    <div class="cta-actions">
+      <button class="btn-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Se planer →</button>
+      <button class="btn-cta-ghost">Kontakt salg</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">NordVPS © 2025</div>
+    <ul class="footer-links">
+      <li><a href="#">Privatlivspolitik</a></li>
+      <li><a href="#">Servicevilkår</a></li>
+      <li><a href="#">Status</a></li>
+      <li><a href="#">Kontakt</a></li>
+    </ul>
+  </footer>
+
+</div><!-- /page-landing -->
+
+
+<!-- ════════════════════════════════════
+     PAGE: CHECKOUT
+════════════════════════════════════ -->
+<div id="page-checkout" class="page">
+  <div style="background:white;border-bottom:1px solid var(--gray-100);padding:1rem 2rem;display:flex;align-items:center;gap:1rem;">
+    <button onclick="showPage('landing')" style="background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:14px;display:flex;align-items:center;gap:6px;">← Tilbage</button>
+    <span style="color:var(--gray-200)">|</span>
+    <span style="font-size:14px;color:var(--gray-600)">Bestil VPS</span>
+  </div>
+
+  <div class="checkout-layout">
+    <!-- LEFT: form -->
+    <div class="checkout-main fade-in">
+
+      <!-- Step 1: Account -->
+      <div class="checkout-card">
+        <div class="checkout-card-header">
+          <div class="step-badge" id="badge-1">1</div>
+          <div class="checkout-card-title">Kontooplysninger</div>
+        </div>
+        <div class="checkout-card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Fornavn</label>
+              <input type="text" id="fname" placeholder="Anders">
+              <span class="field-error" id="err-fname">Udfyld venligst dit fornavn</span>
+            </div>
+            <div class="form-group">
+              <label for="lname">Efternavn</label>
+              <input type="text" id="lname" placeholder="Andersen">
+              <span class="field-error" id="err-lname">Udfyld venligst dit efternavn</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="anders@firma.dk">
+            <span class="field-error" id="err-email">Angiv en gyldig e-mailadresse</span>
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefon</label>
+            <input type="tel" id="phone" placeholder="+45 12 34 56 78">
+          </div>
+          <div class="form-group">
+            <label for="company">Virksomhed (valgfrit)</label>
+            <input type="text" id="company" placeholder="Mit Firma ApS">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Server Config -->
+      <div class="checkout-card">
+        <div class="checkout-card-header">
+          <div class="step-badge" id="badge-2">2</div>
+          <div class="checkout-card-title">Serverkonfiguration</div>
+        </div>
+        <div class="checkout-card-body">
+          <div class="form-group">
+            <label>Operativsystem</label>
+            <div class="os-grid" id="os-grid">
+              <div class="os-option selected" onclick="selectOS(this,'Ubuntu 24.04')"><span class="os-emoji">🐧</span>Ubuntu 24.04</div>
+              <div class="os-option" onclick="selectOS(this,'Debian 12')"><span class="os-emoji">🌀</span>Debian 12</div>
+              <div class="os-option" onclick="selectOS(this,'CentOS 9')"><span class="os-emoji">🎩</span>CentOS 9</div>
+              <div class="os-option" onclick="selectOS(this,'AlmaLinux 9')"><span class="os-emoji">🌿</span>AlmaLinux 9</div>
+              <div class="os-option" onclick="selectOS(this,'Windows 2022')"><span class="os-emoji">🪟</span>Windows 2022</div>
+              <div class="os-option" onclick="selectOS(this,'Brugerdefineret')"><span class="os-emoji">📦</span>Brugerdefineret</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Datacenter-lokation</label>
+            <div class="loc-grid" id="loc-grid">
+              <div class="loc-option selected" onclick="selectLoc(this,'DK — København')">🇩🇰 DK — København<span class="loc-status-dot"></span></div>
+              <div class="loc-option" onclick="selectLoc(this,'DE — Frankfurt')">🇩🇪 DE — Frankfurt<span class="loc-status-dot"></span></div>
+              <div class="loc-option" onclick="selectLoc(this,'NL — Amsterdam')">🇳🇱 NL — Amsterdam<span class="loc-status-dot"></span></div>
+              <div class="loc-option" onclick="selectLoc(this,'UK — London')">🇬🇧 UK — London<span class="loc-status-dot"></span></div>
+              <div class="loc-option" onclick="selectLoc(this,'US — New York')">🇺🇸 US — New York<span class="loc-status-dot"></span></div>
+              <div class="loc-option" onclick="selectLoc(this,'US — Los Angeles')">🇺🇸 US — Los Angeles<span class="loc-status-dot"></span></div>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:4px">
+            <label for="hostname">Hostname</label>
+            <input type="text" id="hostname" placeholder="server1.dinhjemmeside.dk" value="vps1.nordvps.dk">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Payment -->
+      <div class="checkout-card">
+        <div class="checkout-card-header">
+          <div class="step-badge" id="badge-3">3</div>
+          <div class="checkout-card-title">Betaling</div>
+        </div>
+        <div class="checkout-card-body">
+          <div class="payment-tabs">
+            <button class="pay-tab active" onclick="switchPayment('card',this)"><span class="pay-tab-icon">💳</span> Kort</button>
+            <button class="pay-tab" onclick="switchPayment('mobilepay',this)"><span class="pay-tab-icon">📱</span> MobilePay</button>
+            <button class="pay-tab" onclick="switchPayment('invoice',this)"><span class="pay-tab-icon">📄</span> Faktura</button>
+          </div>
+
+          <!-- Card -->
+          <div class="pay-panel active" id="panel-card">
+            <div class="form-group">
+              <label>Kortnummer</label>
+              <div class="card-field">
+                <input type="text" id="card-num" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)">
+                <div class="card-icons">
+                  <div class="card-icon">VISA</div>
+                  <div class="card-icon">MC</div>
+                </div>
+              </div>
+              <span class="field-error" id="err-card">Angiv et gyldigt kortnummer</span>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Udløbsdato</label>
+                <input type="text" id="card-exp" placeholder="MM/ÅÅ" maxlength="5" oninput="formatExp(this)">
+                <span class="field-error" id="err-exp">Angiv udløbsdato</span>
+              </div>
+              <div class="form-group">
+                <label>CVV</label>
+                <input type="text" id="card-cvv" placeholder="123" maxlength="4">
+                <span class="field-error" id="err-cvv">Angiv CVV</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Navn på kortet</label>
+              <input type="text" id="card-name" placeholder="ANDERS ANDERSEN">
+            </div>
+          </div>
+
+          <!-- MobilePay -->
+          <div class="pay-panel" id="panel-mobilepay">
+            <div class="mobilepay-box">
+              <div class="mobilepay-logo">MobilePay</div>
+              <div class="mobilepay-sub">Overfør betalingen til dette nummer</div>
+              <div class="mobilepay-num">🔵 90 12 34 56</div>
+              <div style="font-size:13px;color:var(--gray-600);margin-top:0.5rem">Brug din ordre-ID som besked</div>
+              <div style="margin-top:1rem">
+                <span style="font-family:var(--font-mono);font-size:16px;font-weight:700;background:white;padding:6px 16px;border-radius:var(--radius-md);border:1px solid var(--gray-200)" id="mp-orderid">NV-000000</span>
+              </div>
+            </div>
+            <div class="invoice-info" style="margin-top:1rem;background:var(--blue-50)">
+              📲 Send betalingen i MobilePay-appen og klik på "Bekræft bestilling" herunder. Vi aktiverer din server inden for 5 minutter efter vi modtager betalingen.
+            </div>
+          </div>
+
+          <!-- Invoice -->
+          <div class="pay-panel" id="panel-invoice">
+            <div class="form-group">
+              <label>CVR-nummer</label>
+              <input type="text" id="cvr" placeholder="12345678">
+            </div>
+            <div class="form-group">
+              <label>Faktura-e-mail</label>
+              <input type="email" id="inv-email" placeholder="regnskab@firma.dk">
+            </div>
+            <div class="form-group">
+              <label for="inv-ref">Reference / EAN (valgfrit)</label>
+              <input type="text" id="inv-ref" placeholder="PO-2025-001">
+            </div>
+            <div class="invoice-info">
+              📄 Faktura sendes til den angivne e-mail med 8 dages betalingsfrist. Din server aktiveres straks efter bestillingen. Første faktura inkluderer en aktiveringsgebyr på kr. 0.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /checkout-main -->
+
+    <!-- RIGHT: summary -->
+    <aside class="checkout-sidebar">
+      <div class="order-summary fade-in">
+        <div class="summary-plan-name" id="sum-plan-name">Pro VPS</div>
+        <div class="summary-plan-spec" id="sum-plan-spec">2 vCPU · 4 GB RAM · 80 GB NVMe</div>
+
+        <div class="promo-row">
+          <input type="text" id="promo-input" placeholder="Rabatkode" style="font-size:13px;padding:8px 10px">
+          <button class="btn btn-secondary btn-sm" onclick="applyPromo()">Anvend</button>
+        </div>
+        <div class="promo-success" id="promo-success">✓ Kode anvendt — 10% rabat</div>
+
+        <div class="summary-line"><span>Plan</span><span id="sum-base">kr. 89/md</span></div>
+        <div class="summary-line"><span>IPv4-adresse</span><span>Inkluderet</span></div>
+        <div class="summary-line"><span>DDoS-beskyttelse</span><span>Inkluderet</span></div>
+        <div class="summary-line" id="sum-discount-row" style="display:none;color:var(--teal-600)"><span>Rabat (10%)</span><span id="sum-discount">− kr. 9</span></div>
+        <div class="summary-line" id="sum-setup-row"><span>Oprettelse</span><span>kr. 0</span></div>
+        <div class="summary-line bold"><span>Total</span><span id="sum-total">kr. 89/md</span></div>
+
+        <button class="btn-checkout-submit" id="submit-btn" onclick="submitOrder()">
+          Bekræft bestilling
+        </button>
+
+        <div class="secure-note">🔒 SSL-krypteret betaling via Stripe</div>
+
+        <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--gray-100)">
+          <div style="font-size:12px;color:var(--gray-400);line-height:1.6">
+            Ved at bestille accepterer du vores <a href="#" style="color:var(--blue-600)">servicevilkår</a> og <a href="#" style="color:var(--blue-600)">privatlivspolitik</a>. Alle priser er ekskl. moms.
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- /checkout-layout -->
+</div><!-- /page-checkout -->
+
+
+<!-- ════════════════════════════════════
+     PAGE: SUCCESS
+════════════════════════════════════ -->
+<div id="page-success" class="page">
+  <nav style="display:none"></nav>
+  <div class="success-wrap">
+    <div class="success-card fade-in">
+      <div class="success-icon">✅</div>
+      <h1 class="success-title">Din server er klar!</h1>
+      <p class="success-sub">Bestillingen er bekræftet og din VPS-server er under opstart. Du modtager en e-mail med loginoplysninger inden for 60 sekunder.</p>
+
+      <div class="server-details">
+        <div class="server-detail-row">
+          <span class="server-detail-label">Ordre-ID</span>
+          <span class="server-detail-value" id="suc-orderid">NV-000000</span>
+        </div>
+        <div class="server-detail-row">
+          <span class="server-detail-label">Plan</span>
+          <span class="server-detail-value" id="suc-plan">Pro VPS</span>
+        </div>
+        <div class="server-detail-row">
+          <span class="server-detail-label">Lokation</span>
+          <span class="server-detail-value" id="suc-loc">DK — København</span>
+        </div>
+        <div class="server-detail-row">
+          <span class="server-detail-label">OS</span>
+          <span class="server-detail-value" id="suc-os">Ubuntu 24.04</span>
+        </div>
+        <div class="server-detail-row">
+          <span class="server-detail-label">IP-adresse</span>
+          <span class="server-detail-value green" id="suc-ip">Tildeles om få sekunder...</span>
+        </div>
+        <div class="server-detail-row">
+          <span class="server-detail-label">Status</span>
+          <span class="server-detail-value green">🟢 Opstarter...</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px" onclick="showPage('landing')">Gå til kontrolpanel →</button>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;padding:12px" onclick="showPage('landing')">Bestil endnu en server</button>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-success -->
+
+
+<script>
+// ─── DATA ───────────────────────────────────
+const plans = [
+  { id:'starter', name:'Starter', monthly:29, annual:23, cpu:'1 kerne', ram:'1 GB', disk:'25 GB NVMe', traffic:'1 TB', feats:['Linux eller Windows','Full root-adgang','DDoS-beskyttelse','1 Gbps netværk'], featured:false },
+  { id:'pro',     name:'Pro',     monthly:89, annual:71, cpu:'2 kerner',ram:'4 GB', disk:'80 GB NVMe', traffic:'3 TB', feats:['Linux eller Windows','Full root-adgang','DDoS-beskyttelse','Automatisk backup','2 Gbps netværk'], featured:true },
+  { id:'business',name:'Business',monthly:199,annual:159,cpu:'4 kerner',ram:'8 GB', disk:'200 GB NVMe',traffic:'8 TB', feats:['Linux eller Windows','Full root-adgang','DDoS-beskyttelse','Daglig backup','Dedikeret support','4 Gbps netværk'], featured:false },
+  { id:'enterprise',name:'Enterprise',monthly:449,annual:359,cpu:'8 kerner',ram:'32 GB',disk:'500 GB NVMe',traffic:'Ubegrænset',feats:['Linux eller Windows','Full root-adgang','DDoS-beskyttelse','Daglig backup','Prioritets-support 24/7','Managed mulighed','10 Gbps netværk'], featured:false },
+];
+
+let isAnnual = false;
+let selectedPlan = plans[1]; // default Pro
+let promoApplied = false;
+let selectedOS = 'Ubuntu 24.04';
+let selectedLoc = 'DK — København';
+
+// ─── PAGE NAV ───────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ─── BILLING TOGGLE ─────────────────────────
+function toggleBilling() {
+  isAnnual = !isAnnual;
+  const btn = document.getElementById('billing-toggle');
+  btn.classList.toggle('on', isAnnual);
+  document.getElementById('lbl-monthly').classList.toggle('active', !isAnnual);
+  document.getElementById('lbl-annual').classList.toggle('active', isAnnual);
+  renderPlans();
+}
+
+// ─── PLANS ──────────────────────────────────
+function renderPlans() {
+  const grid = document.getElementById('plans-grid');
+  grid.innerHTML = plans.map(p => {
+    const price = isAnnual ? p.annual : p.monthly;
+    return `
+    <div class="plan-card ${p.featured ? 'featured' : ''}">
+      ${p.featured ? '<div class="featured-pill">mest populær</div>' : ''}
+      <div class="plan-tier">${p.name}</div>
+      <div class="plan-price-row">
+        <span class="plan-currency">kr.</span>
+        <span class="plan-amount">${price}</span>
+        <span class="plan-period">/md</span>
+      </div>
+      <div class="plan-specs">
+        <div class="spec"><span class="spec-k">vCPU</span><span class="spec-v">${p.cpu}</span></div>
+        <div class="spec"><span class="spec-k">RAM</span><span class="spec-v">${p.ram}</span></div>
+        <div class="spec"><span class="spec-k">SSD</span><span class="spec-v">${p.disk}</span></div>
+        <div class="spec"><span class="spec-k">Trafik</span><span class="spec-v">${p.traffic}</span></div>
+      </div>
+      <div class="plan-feats">${p.feats.map(f => `<div class="feat">${f}</div>`).join('')}</div>
+      <button class="btn-plan ${p.featured ? 'featured' : ''}" onclick="selectPlan('${p.id}')">Bestil nu</button>
+    </div>`;
+  }).join('');
+}
+
+function selectPlan(id) {
+  selectedPlan = plans.find(p => p.id === id);
+  updateSummary();
+  showPage('checkout');
+  generateOrderId();
+}
+
+// ─── CHECKOUT ───────────────────────────────
+function generateOrderId() {
+  const id = 'NV-' + Math.floor(100000 + Math.random() * 900000);
+  document.getElementById('mp-orderid').textContent = id;
+  document.getElementById('suc-orderid').textContent = id;
+}
+
+function updateSummary() {
+  const price = isAnnual ? selectedPlan.annual : selectedPlan.monthly;
+  const discount = promoApplied ? Math.round(price * 0.1) : 0;
+  const total = price - discount;
+  document.getElementById('sum-plan-name').textContent = selectedPlan.name + ' VPS';
+  document.getElementById('sum-plan-spec').textContent = `${selectedPlan.cpu} · ${selectedPlan.ram} RAM · ${selectedPlan.disk}`;
+  document.getElementById('sum-base').textContent = `kr. ${price}/md`;
+  document.getElementById('sum-total').textContent = `kr. ${total}/md`;
+  if (promoApplied) {
+    document.getElementById('sum-discount').textContent = `− kr. ${discount}`;
+    document.getElementById('sum-discount-row').style.display = 'flex';
+  } else {
+    document.getElementById('sum-discount-row').style.display = 'none';
+  }
+}
+
+function applyPromo() {
+  const val = document.getElementById('promo-input').value.trim().toUpperCase();
+  if (val === 'NORD10' || val === 'VELKOMMEN') {
+    promoApplied = true;
+    document.getElementById('promo-success').classList.add('show');
+    updateSummary();
+  } else {
+    document.getElementById('promo-input').style.borderColor = 'var(--red-400)';
+    setTimeout(() => document.getElementById('promo-input').style.borderColor = '', 1500);
+  }
+}
+
+// ─── OS / LOCATION ──────────────────────────
+function selectOS(el, name) {
+  document.querySelectorAll('.os-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedOS = name;
+}
+
+function selectLoc(el, name) {
+  document.querySelectorAll('.loc-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedLoc = name;
+}
+
+// ─── PAYMENT TABS ───────────────────────────
+function switchPayment(type, btn) {
+  document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.pay-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + type).classList.add('active');
+}
+
+// ─── CARD FORMATTING ────────────────────────
+function formatCard(el) {
+  let v = el.value.replace(/\D/g, '').slice(0,16);
+  el.value = v.replace(/(.{4})/g, '$1 ').trim();
+}
+
+function formatExp(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + '/' + v.slice(2);
+  el.value = v;
+}
+
+// ─── VALIDATION & SUBMIT ────────────────────
+function validate() {
+  let ok = true;
+  const fields = [
+    { id:'fname', err:'err-fname', test: v => v.length > 0 },
+    { id:'lname', err:'err-lname', test: v => v.length > 0 },
+    { id:'email', err:'err-email', test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+  ];
+
+  const activePanel = document.querySelector('.pay-panel.active').id;
+  if (activePanel === 'panel-card') {
+    fields.push(
+      { id:'card-num', err:'err-card', test: v => v.replace(/\s/g,'').length === 16 },
+      { id:'card-exp', err:'err-exp', test: v => /^\d{2}\/\d{2}$/.test(v) },
+      { id:'card-cvv', err:'err-cvv', test: v => v.length >= 3 }
+    );
+  }
+
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    const errEl = document.getElementById(f.err);
+    if (!f.test(el.value.trim())) {
+      el.classList.add('error');
+      if (errEl) errEl.classList.add('show');
+      ok = false;
+    } else {
+      el.classList.remove('error');
+      if (errEl) errEl.classList.remove('show');
+    }
+  });
+  return ok;
+}
+
+function submitOrder() {
+  if (!validate()) return;
+
+  const btn = document.getElementById('submit-btn');
+  btn.innerHTML = '<span class="spinner"></span> Behandler...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    document.getElementById('suc-plan').textContent = selectedPlan.name + ' VPS';
+    document.getElementById('suc-loc').textContent = selectedLoc;
+    document.getElementById('suc-os').textContent = selectedOS;
+
+    showPage('success');
+
+    // Simulate IP assignment
+    setTimeout(() => {
+      const ip = `185.${Math.floor(100+Math.random()*150)}.${Math.floor(1+Math.random()*254)}.${Math.floor(1+Math.random()*254)}`;
+      document.getElementById('suc-ip').textContent = ip;
+    }, 3000);
+
+    btn.innerHTML = 'Bekræft bestilling';
+    btn.disabled = false;
+  }, 2000);
+}
+
+// ─── INIT ───────────────────────────────────
+renderPlans();
+updateSummary();
+</script>
+</body>
+</html>
